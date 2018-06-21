@@ -1,0 +1,117 @@
+version: '3.4'
+services:
+    server:
+        image: daocloud.io/buxiaomo/splunk:7.0.0
+        hostname: splunkserver
+        environment:
+            - SPLUNK_START_ARGS=--accept-license --answer-yes
+            - SPLUNK_ENABLE_DEPLOY_SERVER=true
+            - SPLUNK_ENABLE_LISTEN=9997
+            - SPLUNK_CMD_1=edit cluster-config -mode master -replication_factor 2 -search_factor 2 -secret admin -cluster_label swarm -auth admin:changeme
+            - SPLUNK_CMD_2=set servername splunk-server -auth admin:changeme
+            - SPLUNK_CMD_3=restart
+        ports:
+            - 8000:8000/tcp
+            - 8088:8088/tcp
+        networks:
+            splunk:
+                aliases:
+                    - splunkserver
+        volumes:
+            - /opt/splunk/var:/opt/splunk/var:rw
+            - /opt/splunk/etc:/opt/splunk/etc:rw
+            - /usr/share/zoneinfo/Asia/Shanghai:/etc/localtime:ro
+        deploy:
+            mode: replicated
+            replicas: 1
+            update_config:
+                parallelism: 1
+                delay: 10s
+            placement:
+                constraints:
+                    - node.hostname == Docker-Swarm-Splunk
+        logging:
+            driver: json-file
+            options:
+                max-file: '3'
+                max-size: 100m
+    indexer01:
+        image: daocloud.io/buxiaomo/splunk:7.0.0
+        hostname: indexer01
+        environment:
+            - SPLUNK_START_ARGS=--accept-license --answer-yes
+            - SPLUNK_ENABLE_LISTEN=9997
+            - SPLUNK_DEPLOYMENT_SERVER=splunkserver:8089
+            - SPLUNK_CMD_1=disable webserver -auth admin:changeme
+            - SPLUNK_CMD_2=edit cluster-config -mode slave -master_uri https://splunkserver:8089 -replication_port 9887 -secret admin -auth admin:changeme
+            - SPLUNK_CMD_3=set servername indexer01 -auth admin:changeme
+            - SPLUNK_CMD_4=restart
+        networks:
+            splunk:
+                aliases:
+                    - indexer01
+        depends_on:
+            - splunkserver
+        volumes:
+            - /usr/share/zoneinfo/Asia/Shanghai:/etc/localtime:ro
+            - /opt/splunk/var:/opt/splunk/var:rw
+            - /opt/splunk/etc:/opt/splunk/etc:rw
+        deploy:
+            mode: replicated
+            replicas: 0
+            update_config:
+                parallelism: 1
+                delay: 10s
+            placement:
+                constraints:
+                    - node.hostname == Docker-Swarm-Indexer01
+        logging:
+            driver: json-file
+            options:
+                max-file: '3'
+                max-size: 100m
+    indexer02:
+        image: daocloud.io/buxiaomo/splunk:7.0.0
+        hostname: indexer02
+        environment:
+            - SPLUNK_START_ARGS=--accept-license --answer-yes
+            - SPLUNK_ENABLE_LISTEN=9997
+            - SPLUNK_DEPLOYMENT_SERVER=splunkserver:8089
+            - SPLUNK_CMD_1=disable webserver -auth admin:changeme
+            - SPLUNK_CMD_2=edit cluster-config -mode slave -master_uri https://splunkserver:8089 -replication_port 9887 -secret admin -auth admin:changeme
+            - SPLUNK_CMD_3=set servername indexer02 -auth admin:changeme
+            - SPLUNK_CMD_4=restart
+        networks:
+            splunk:
+                aliases:
+                    - indexer02
+        depends_on:
+            - splunkserver
+        volumes:
+            - /usr/share/zoneinfo/Asia/Shanghai:/etc/localtime:ro
+            - /opt/splunk/var:/opt/splunk/var:rw
+            - /opt/splunk/etc:/opt/splunk/etc:rw
+        deploy:
+            mode: replicated
+            replicas: 0
+            update_config:
+                parallelism: 1
+                delay: 10s
+            placement:
+                constraints:
+                    - node.hostname == Docker-Swarm-Indexer02
+        logging:
+            driver: json-file
+            options:
+                max-file: '3'
+                max-size: 100m
+networks:
+    splunk:
+        external: true
+# docker stack deploy -c splunk.yml splunk
+
+# When splunk server initialization is complete run the following command to start index:
+# docker service scale splunk_indexer01=1 splunk_indexer02=1 -d
+
+# Run the following command to start universalforwarder after index initialization is completed
+# docker service scale splunk_forward-monitor-docker=1 -d

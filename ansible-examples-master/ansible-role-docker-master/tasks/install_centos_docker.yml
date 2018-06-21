@@ -1,0 +1,21 @@
+
+- yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker-engine
+    - docker-engine-selinux
+
+- yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker
+    - docker-common
+    - docker-selinux
+
+
+- service:
+    name: docker
+    enabled: yes
+    state: started

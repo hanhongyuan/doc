@@ -1,0 +1,15 @@
+- name: install docker from docker repo
+  include: tasks/install_docker.yml
+  when: install_latest
+
+- name: install docker from centos repo
+  include: tasks/install_centos_docker.yml
+  when: not install_latest
+
+
+
+- get_url:
+    url: https://github.com/docker/compose/releases/download/1.8.0/docker-compose-Linux-x86_64
+    checksum: sha256:ebc6ab9ed9c971af7efec074cff7752593559496d0d5f7afb6bfd0e0310961ff
+    dest: /usr/local/bin/docker-compose
+    mode: 0111

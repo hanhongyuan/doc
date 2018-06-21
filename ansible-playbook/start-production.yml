@@ -1,0 +1,7 @@
+- name: start Docker Container
+  hosts: production
+  roles:
+  - start-container
+  vars_files:
+  - /vars/production.yml
+    

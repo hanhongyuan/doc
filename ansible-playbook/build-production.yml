@@ -1,0 +1,7 @@
+- naem :copy config and build image
+  hosts: localhost
+  roles: 
+  - build-image
+  vars_files:
+  - vars/production.yml
+  

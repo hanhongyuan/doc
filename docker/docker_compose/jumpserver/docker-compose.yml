@@ -1,0 +1,16 @@
+version: '2.4'
+services:
+    jumpserver:
+        image: jumpserver/jumpserver  
+        hostname: jumpserver
+        ports:
+            - 8080:80/tcp
+            - 2222:2222/tcp
+            - 8443:443/tcp
+        restart: always
+        networks:
+            jump_net:
+networks:
+    jump_net:
+        driver: bridge
+
