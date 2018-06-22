@@ -1,0 +1,14 @@
+version: '3.0'
+services:
+     zabbix-agent:
+         image: zabbix-agent
+         hostname: zabbix-agent
+         ports:
+         - 10050:10050
+         networks:
+             zabbix:
+         environment:
+             - ZBX_SERVER_HOST=192.168.19.15
+             - ZBX_SERVER_PORT=10051
+networks:
+    zabbix:

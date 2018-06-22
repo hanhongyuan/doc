@@ -1,0 +1,13 @@
+---
+# handlers file for zabbix-server
+
+- name: start zabbix-server
+  service:
+    name=zabbix-server
+    state=started
+    enabled=yes
+
+- name: restart zabbix-server
+  service:
+    name=zabbix-server
+    state=restarted

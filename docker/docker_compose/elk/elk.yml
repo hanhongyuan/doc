@@ -1,0 +1,31 @@
+version: '1.0'
+services:
+    elasticsearch:
+        image: elasticsearch
+        ports:
+        - 9200:9200
+        volumes:
+        - /usr/docker/elasticsearch/data:/usr/share/elasticsearch
+        hostname: elk-elasticsearch
+        network:
+            elk:
+    logstash:
+        image: logstash
+        hostname: elk-logstash
+        ports:
+        - 4560:4560
+        network:
+            elk:
+        volumes:
+        - /etc/logstash.conf:/etc/logstash.conf
+        command: ["logstash -f","/etc/logstash.conf"]
+    kibana:
+        image: kibana
+        hostname: elk-kibana
+        ports:
+        - 5601:5601
+        network:
+            elk:
+        environment:
+        - ELASTICSEARCH_URL=http://elk-elasticsearch:9200
+

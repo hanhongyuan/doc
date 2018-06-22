@@ -1,0 +1,9 @@
+---
+
+- name: Installing Zabbix server
+  include: "install.{{ ansible_os_family| lower }}.yml"
+  tags: [ zabbix-server ]
+
+- name: Configuring Zabbix server
+  include: configure.yml
+  tags: [ zabbix-server, zabbix-server-configure ]
