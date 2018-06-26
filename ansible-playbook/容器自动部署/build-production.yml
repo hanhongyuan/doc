@@ -1,4 +1,4 @@
-- naem :copy config and build image
+- name: copy config and build image
   hosts: localhost
   roles: 
   - build-image

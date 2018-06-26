@@ -1,0 +1,8 @@
+- name: install nginx
+ hosts: nginx
+ roles:
+  - nginx
+
+-name: install tomcat
+ hosts: web
+ roles: tomcat
