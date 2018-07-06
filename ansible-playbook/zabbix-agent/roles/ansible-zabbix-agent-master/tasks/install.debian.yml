@@ -1,6 +1,0 @@
----
-
-- name: Installing Zabbix agent
-  yum:
-    name: zabbix-agent
-    state: present

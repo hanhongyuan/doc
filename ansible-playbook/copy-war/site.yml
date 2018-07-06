@@ -1,0 +1,4 @@
+- name: copy pre-web
+  hosts: pre-web
+  roles:
+  - copy-tomcat

@@ -1,8 +1,8 @@
 ---
-- hosts: all
-  remote_user: root
-  roles:
-  - common
+#- hosts: all
+#  remote_user: root
+#  roles:
+#  - common
 
 - hosts: lb_servers
   remote_user: root
@@ -14,7 +14,7 @@
   roles:
   - tomcat
 
-- hosts: memcached_servers
-  remote_user: root
-  roles:
-  - memcached
+#- hosts: memcached_servers
+#  remote_user: root
+#  roles:
+#  - memcached

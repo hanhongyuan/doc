@@ -1,0 +1,9 @@
+  - name: rm old packer
+    shell: rm -rf /usr/local/tomcat/webapps/VCOIN_V5_0_22coin*
+  - name: copy package
+    copy: src=/home/pack/VCOIN_V5_0_22coin_sub.war dest=/usr/local/tomcat/webapps/
+  - name: stop tomcat
+    shell: service tomcat stop
+  - name: start tomcat
+    shell: chdir=/usr/local/tomcat/bin nohup ./catalina.sh start &
+

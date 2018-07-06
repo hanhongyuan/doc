@@ -1,0 +1,10 @@
+jdk_path: /usr/local/jdk
+jdk_dest_path: /usr/local/jdk
+JAVA_HOME: /usr/local/jdk/jdk
+CATALINA_HOME: /usr/local/tomcat
+tomcat_url: http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.24/bin/apache-tomcat-8.5.24.tar.gz
+tomcat_home: /usr/local
+http_port:
+tomcat_http_port: 8080
+inventory_hostname: 22coin.com
+ware-home: 

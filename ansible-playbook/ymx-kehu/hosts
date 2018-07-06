@@ -1,0 +1,9 @@
+[nginx]
+
+[pre-web]
+
+[backend_servers]
+
+[web:children]
+pre-web
+bak-web

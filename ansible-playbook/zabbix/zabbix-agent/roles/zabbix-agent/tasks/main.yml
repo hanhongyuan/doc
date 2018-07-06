@@ -1,0 +1,20 @@
+- name: mkdir
+  file: path={{ TARGET_PATH }}/docker/zabbix-agent
+
+- name: install epel-release
+  yum: name=epel-release  state=present
+
+- name: install docker-compose
+  yum: name=docker-compose state=present
+
+- name: copy docker-compose file
+  template:
+   src: docker-compose.yml
+   dest: "{{ TARGET_PATH }}/docker/zabbix-agent/docker-compose.yml"
+
+
+- name: raise container
+  shell: docker-compose -f {{ TARGET_PATH }}/docker-compose.yml up -d
+
+
+

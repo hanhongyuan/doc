@@ -1,0 +1,14 @@
+version: '2.0'
+services:
+     zabbix-agent:
+         image: zabbix-agent
+         hostname: zabbix-agent
+         ports:
+         - 10050:10050
+         networks:
+             zabbix:
+         environment:
+             - ZBX_SERVER_HOST={{ ZBX_SERVER_HOST }}
+             - ZBX_SERVER_PORT={{ ZBX_SERVER_PORT }}
+networks:
+    zabbix:

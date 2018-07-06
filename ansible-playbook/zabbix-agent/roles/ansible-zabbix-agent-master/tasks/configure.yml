@@ -1,9 +1,0 @@
----
-
-- name: Generating config
-  template:
-    src: etc/zabbix/zabbix_agentd.conf
-    dest: /etc/zabbix/zabbix_agentd.conf
-    mode: 0750
-    owner: root
-    group: zabbix
