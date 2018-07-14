@@ -1,17 +1,20 @@
-- name: change password for root
- shell: echo "password" |sudo passwd  --stdin root
+hosts:
+sudo: yes
+tasks:
+ - name: change password for root
+   shell: echo "password" |sudo passwd  --stdin root
 
-- name: oepn PermitRootLogin
- shell: sed -i '/^#PermitRootLogin/s/^#//g' /etc/ssh/sshd.config
+ - name: oepn PermitRootLogin
+   shell: sed -i '/^#PermitRootLogin/s/^#//g' /etc/ssh/sshd_config
 
-- name: PasswordAuthentication
-shell: sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+ - name: PasswordAuthentication
+   shell: sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 
-- name: resatrt sshd
- shell: "sudo systemctl restart sshd"
+ - name: resatrt sshd
+   shell: "sudo systemctl restart sshd"
 
-- name: copy id_rsa.pub
- authorized_key:
+ - name: copy id_rsa.pub
+   authorized_key:
      user=root
      key='{{ lookup('file', '/root/.ssh/id_rsa.pub')}}'
      path='/root/.ssh/authorized_keys'

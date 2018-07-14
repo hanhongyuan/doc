@@ -1,2 +1,0 @@
-- name: copy pre-web
-  template: src=./pre-web.war dest=/usr/local/

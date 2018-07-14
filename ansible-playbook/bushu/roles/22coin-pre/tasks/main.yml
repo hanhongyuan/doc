@@ -1,0 +1,16 @@
+  - name: rm old packer
+    shell: rm -rf /usr/local/tomcat/webapps/VCOIN_V5_0_22coin*
+
+  - name: copy package
+    copy: src=/home/pack/VCOIN_V5_0_22coin_sub.war dest=/usr/local/tomcat/webapps/
+
+  - name: the status of tomcat
+    shell: netstat -ntlp |grep 8080|awk '{print $4}'|awk -F ':' '{print $4}'
+    register: info
+
+  - name: stop tomcat
+    shell: netstat  -ntlp|grep 8080|awk '{print $7}'|cut -d'/' -f1 |xargs kill -9
+    when: info['stdout']=="8080"
+
+  - name: start tomcat
+    shell: chdir=/usr/local/tomcat/bin nohup ./catalina.sh start &

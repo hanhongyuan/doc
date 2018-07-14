@@ -1,0 +1,14 @@
+- name: copy pre-web
+  hosts: pre-web
+  roles:
+  - 22coin-pre
+  
+- name: copy 22coin-benk
+  hosts: benk-web
+  roles:
+  - 22coin-benk
+  
+ - name: copy otc
+   hosts: otc
+   roles: 
+   - otc
